@@ -1,13 +1,24 @@
 "use client";
 export const dynamic = "force-dynamic";
-import { useEffect, useState, useMemo } from "react";
+
+import { Suspense, useEffect, useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createBrowserClient } from "@supabase/ssr";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Card } from "@/components/ui/card";
 
+// === Outer Page Component ===
 export default function CategoryPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading category...</div>}>
+      <CategoryContent />
+    </Suspense>
+  );
+}
+
+// === Inner Component that uses useSearchParams() safely ===
+function CategoryContent() {
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -133,7 +144,7 @@ export default function CategoryPage() {
           </div>
         </div>
 
-        {/* Product Grid - scrollable only */}
+        {/* Product Grid */}
         <div className="flex-1 h-full overflow-y-auto p-6">
           {loading ? (
             <p className="text-muted-foreground">Loading...</p>

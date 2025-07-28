@@ -1,12 +1,25 @@
 "use client";
 export const dynamic = "force-dynamic";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { createBrowserClient } from "@supabase/ssr";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
+// ==== Outer Component with Suspense ====
 export default function ProductScraper() {
+  return (
+    <Suspense
+      fallback={<div className="p-6 text-foreground">Loading product...</div>}
+    >
+      <ProductScraperContent />
+    </Suspense>
+  );
+}
+
+// ==== Actual Logic Component ====
+function ProductScraperContent() {
   const searchParams = useSearchParams();
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -101,7 +114,6 @@ export default function ProductScraper() {
 
         const responses = await Promise.all(requests);
         const jsons = await Promise.all(responses.map((res) => res.json()));
-
         const allData = jsons.flat();
         setData(allData);
       } catch (err: any) {
