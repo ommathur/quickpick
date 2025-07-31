@@ -103,7 +103,11 @@ function ProductScraperContent() {
             zeptoUrl.searchParams.append("url", link)
           );
           zeptoUrl.searchParams.append("user_id", user.id);
-          requests.push(fetch(zeptoUrl.toString()));
+          requests.push(
+            fetch(zeptoUrl.toString(), {
+              headers: { "ngrok-skip-browser-warning": "any" },
+            })
+          );
         }
 
         if (requests.length === 0) {
