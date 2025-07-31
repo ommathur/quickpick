@@ -98,9 +98,7 @@ function ProductScraperContent() {
         }
 
         if (zeptoLinks.length > 0) {
-          const zeptoUrl = new URL(
-            "https://1b19bed2-cffc-4ad0-b421-80054c52c5bc-00-12kxrecpbhsck.riker.replit.dev"
-          );
+          const zeptoUrl = new URL("https://epic-ladybug-glad.ngrok-free.app");
           zeptoLinks.forEach((link: string) =>
             zeptoUrl.searchParams.append("url", link)
           );
@@ -135,27 +133,34 @@ function ProductScraperContent() {
         <h3 className="text-lg font-semibold text-gray-300 px-6">{title}</h3>
         <div className="flex gap-4 overflow-x-auto px-6 pb-2">
           {filtered.map((item, idx) => (
-            <Card
+            <a
               key={idx}
-              className={`${colorClass} flex-shrink-0 w-64 rounded-xl shadow-md`}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 w-64"
             >
-              <CardContent className="p-4 space-y-1 text-white">
-                <p>
-                  <strong>Product:</strong> {item.display_name}
-                </p>
-                <p>
-                  <strong>Unit:</strong> {item.unit}
-                </p>
-                <p>
-                  <strong>Price:</strong>{" "}
-                  {item.available ? `₹${item.price}` : "Not Available"}
-                </p>
-                <p>
-                  <strong>Available:</strong>{" "}
-                  {item.available ? "✅ Yes" : "❌ No"}
-                </p>
-              </CardContent>
-            </Card>
+              <Card
+                className={`${colorClass} w-full rounded-xl shadow-md transition-transform hover:scale-105`}
+              >
+                <CardContent className="p-4 space-y-1 text-white">
+                  <p>
+                    <strong>Product:</strong> {item.display_name}
+                  </p>
+                  <p>
+                    <strong>Unit:</strong> {item.unit}
+                  </p>
+                  <p>
+                    <strong>Price:</strong>{" "}
+                    {item.available ? `₹${item.price}` : "Not Available"}
+                  </p>
+                  <p>
+                    <strong>Available:</strong>{" "}
+                    {item.available ? "✅ Yes" : "❌ No"}
+                  </p>
+                </CardContent>
+              </Card>
+            </a>
           ))}
         </div>
       </div>
